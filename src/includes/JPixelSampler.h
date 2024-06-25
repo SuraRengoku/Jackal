@@ -78,7 +78,7 @@ namespace JackalRenderer {
 #ifdef MSAA4X
     template<typename T>
     using JPixelSampler = J4PixelSampler<T>;
-#elseif MSAA8X
+#elif MSAA8X
     template<typename T>
     using JPixelSampler = J8PixelSampler<T>;
 #else
@@ -95,8 +95,8 @@ namespace JackalRenderer {
     using JDepthBuffer = std::vector<JDepthPixelSampler>;
     using JColorBuffer = std::vector<JColorPixelSampler>;
 
-    constexpr JPixelRGBA k_trWhite = { 255, 255, 255, 255 };
-    constexpr JPixelRGBA k_trBlack = { 0, 0, 0, 0};
+    constexpr JPixelRGBA jWhite = { 255, 255, 255, 255 };
+    constexpr JPixelRGBA jBlack = { 0, 0, 0, 0};
 }
 
 #endif //JPIXELSAMPLER_H

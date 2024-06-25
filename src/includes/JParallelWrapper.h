@@ -37,7 +37,7 @@ namespace JackalRenderer{
     void parallelLoop(IndexType beginIndex, IndexType endIndex, const Function &function, JExecutionPolicy policy = JExecutionPolicy::J_PARALLEL) {
         if(beginIndex > endIndex) return;
         // Refs: https://blog.csdn.net/kezunhai/article/details/44678845
-        if(policy = JExecutionPolicy::J_PARALLEL) tbb::parallel_for(beginIndex, endIndex, function);
+        if(policy == JExecutionPolicy::J_PARALLEL) tbb::parallel_for(beginIndex, endIndex, function);
         else {
             for(auto i = beginIndex; i < endIndex; ++i)
                 function(i);
@@ -56,7 +56,7 @@ namespace JackalRenderer{
     void parallelLoopWithAffinity(size_t beginIndex, size_t endIndex, const Function &function, JExecutionPolicy policy = JExecutionPolicy::J_PARALLEL) {
         if(beginIndex > endIndex) return;
         static tbb::affinity_partitioner ap;
-        if(policy = JExecutionPolicy::J_PARALLEL) tbb::parallel_for(beginIndex, endIndex, function, ap);
+        if(policy == JExecutionPolicy::J_PARALLEL) tbb::parallel_for(beginIndex, endIndex, function, ap);
         else {
             for(auto i = beginIndex; i < endIndex; ++i)
                 function(i);
@@ -64,7 +64,7 @@ namespace JackalRenderer{
     }
 
     template<typename RandomIterator, typename T>
-    void parallelFill(const RandomIterator &begin, const RandomIterator &end, const T &value, JExecutionPolicy policy = JExecutionPolicy::J_PARALLEL){
+    void parallelFill(const RandomIterator &begin, const RandomIterator &end, const T &value, JExecutionPolicy policy) {
         auto diff = end - begin;
         if(diff <= 0) return;
         size_t size = static_cast<size_t>(diff);

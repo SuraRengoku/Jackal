@@ -23,7 +23,11 @@ file(GLOB_RECURSE HEADERS ./src/includes/*.h)
 source_group("Header Files" FILES ${HEADERS})
 
 add_library(${PROJECT_NAME} ${SRCS} ${HEADERS}
-        main.cpp)
+        main.cpp
+        src/includes/JShadingState.h
+        src/includes/JTexture2D.h
+        src/JTexture2D.cpp
+        src/JTextureHolder.cpp)
 add_library(Jackal::renderer ALIAS ${PROJECT_NAME})
 
 target_link_libraries( ${PROJECT_NAME}
