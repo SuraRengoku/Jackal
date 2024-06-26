@@ -1,20 +1,20 @@
 ﻿//
 // Created by jonas on 2024/6/25.
 //
-#include "JTextureHolder.h"
+#include "JTextureContainer.h"
 #include "JParallelWrapper.h"
 
 namespace JackalRenderer{
-    JTextureHolder::JTextureHolder(std::uint16_t width, std::uint16_t height):
+    JTextureContainer::JTextureContainer(std::uint16_t width, std::uint16_t height):
         width(width), height(height), tData(nullptr) {}
 
-    JTextureHolder::~JTextureHolder() { freeTexture(); }
+    JTextureContainer::~JTextureContainer() { freeTexture(); }
 
-    std::uint32_t JTextureHolder::read(const std::uint16_t &x, const std::uint16_t &y) const {
+    std::uint32_t JTextureContainer::read(const std::uint16_t &x, const std::uint16_t &y) const {
         return tData[xyToIndex(x, y)];
     }
 
-    void JTextureHolder::read(const std::uint16_t &x, const std::uint16_t &y,
+    void JTextureContainer::read(const std::uint16_t &x, const std::uint16_t &y,
         uchar &r, uchar &g, uchar &b, uchar &a) const {
         std::uint32_t texel = read(x, y);
         r = (texel >> 24) & 0xFF; // front 8 bits
@@ -23,7 +23,7 @@ namespace JackalRenderer{
         a = (texel >>  0) & 0xFF; // last 8 bits
     }
 
-    void JTextureHolder::loadTexture(const unsigned int &nElements, uchar *data,
+    void JTextureContainer::loadTexture(const unsigned int &nElements, uchar *data,
         const std::uint16_t &width, const std::uint16_t &height, const int &channel) {
         tData = new std::uint32_t[nElements]; //apply memory
         parallelLoop((size_t)0, (size_t)(height * width), [&](const int &ind) -> void {
@@ -44,51 +44,51 @@ namespace JackalRenderer{
                     r = g = b = data[address], a = 255;
                     break;
             }
-            tData[xyToIndex(x, y)] = (r << 24) | (g << 16) | (b << 8) | (a << 0);
+            tData[xyToIndex(x, y)] = (r << 24) | (g << 16) | (b << 8) | (a << 0); // will not overflow
         }, JExecutionPolicy::J_PARALLEL);
     }
 
-    void JTextureHolder::freeTexture() {
+    void JTextureContainer::freeTexture() {
         if(tData) {
             delete [] tData;
             tData = nullptr;
         }
     }
 
-    JLinearTextureHolder::JLinearTextureHolder(uchar *data, std::uint16_t width, std::uint16_t height, int channel)
-        : JTextureHolder(width, height) {
-        JLinearTextureHolder::loadTexture(width * height, data, width, height, channel);
+    JLinearTextureContainer::JLinearTextureContainer(uchar *data, std::uint16_t width, std::uint16_t height, int channel)
+        : JTextureContainer(width, height) {
+        JLinearTextureContainer::loadTexture(width * height, data, width, height, channel);
     }
 
-    uint JLinearTextureHolder::xyToIndex(const std::uint16_t &x, const std::uint16_t &y) const {
+    uint JLinearTextureContainer::xyToIndex(const std::uint16_t &x, const std::uint16_t &y) const {
         return y * width + x; //reset
     }
 
-    JTilingTextureHolder::JTilingTextureHolder(uchar *data, std::uint16_t width, std::uint16_t height, int channel)
-        : JTextureHolder(width, height) {
+    JTilingTextureContainer::JTilingTextureContainer(uchar *data, std::uint16_t width, std::uint16_t height, int channel)
+        : JTextureContainer(width, height) {
             widthInTiles = (width + tileBase4 -1) / tileBase4; // upper bound
             heightInTiles = (height + tileBase4 -1) / tileBase4;
             uint nElements = widthInTiles * heightInTiles * tileBase16; // tileBase16 = tileBase4 * tileBase4
-            JTilingTextureHolder::loadTexture(nElements, data, width, height, channel);
+            JTilingTextureContainer::loadTexture(nElements, data, width, height, channel);
     }
 
-    uint JTilingTextureHolder::xyToIndex(const std::uint16_t &x, const std::uint16_t &y) const {
+    uint JTilingTextureContainer::xyToIndex(const std::uint16_t &x, const std::uint16_t &y) const {
         // Refs: https://fgiesen.wordpress.com/2011/01/17/texture-tiling-and-swizzling/
         return (((int)(y >> 2) * widthInTiles + (int)(x >> 2)) << 4) + ((y & 3) << 2) + (x & 3);
     }
 
-    JSwizzlingTextureHolder::JSwizzlingTextureHolder(uchar *data, std::uint16_t width, std::uint16_t height, int channel)
-        : JTextureHolder(width, height) {
+    JSwizzlingTextureContainer::JSwizzlingTextureContainer(uchar *data, std::uint16_t width, std::uint16_t height, int channel)
+        : JTextureContainer(width, height) {
         widthInTiles = (width + tileBase32 - 1) / tileBase32;
         heightInTiles = (height + tileBase32 -1) / tileBase32;
         uint nElements = widthInTiles * heightInTiles * tileBase1024;
-        JSwizzlingTextureHolder::loadTexture(nElements, data, width, height, channel);
+        JSwizzlingTextureContainer::loadTexture(nElements, data, width, height, channel);
     }
 
-    uint JSwizzlingTextureHolder::xyToIndex(const std::uint16_t &x, const std::uint16_t &y) const {
+    uint JSwizzlingTextureContainer::xyToIndex(const std::uint16_t &x, const std::uint16_t &y) const {
         std::uint8_t rx = x & (tileBase32 - 1), ry = y & (tileBase32 -1);
         std::uint16_t ri = 0;
-        JSwizzlingTextureHolder::encodeMortonCurve(rx, ry, ri);
+        JSwizzlingTextureContainer::encodeMortonCurve(rx, ry, ri);
         // ri can also refer to the order of being stored
         return ((y >> bits32) * widthInTiles + (x >> bits32)) * tileBase1024 + ri;
     }

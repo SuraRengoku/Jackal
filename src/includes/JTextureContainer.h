@@ -2,19 +2,19 @@
 // Created by jonas on 2024/6/25.
 //
 
-#ifndef JTEXTUREHOLDER_H
-#define JTEXTUREHOLDER_H
+#ifndef JTEXTUREContainer_H
+#define JTEXTUREContainer_H
 
 #include <memory>
 
 namespace JackalRenderer{
     using uchar = unsigned char;
     using uint = unsigned int;
-    class JTextureHolder {
+    class JTextureContainer {
     public:
-        using ptr = std::shared_ptr<JTextureHolder>;
-        JTextureHolder(std::uint16_t width, std::uint16_t height);
-        virtual ~JTextureHolder();
+        using ptr = std::shared_ptr<JTextureContainer>;
+        JTextureContainer(std::uint16_t width, std::uint16_t height);
+        virtual ~JTextureContainer();
 
         std::uint16_t getWidth() const { return width; }
         std::uint16_t getHeight() const { return height; }
@@ -30,20 +30,20 @@ namespace JackalRenderer{
         void freeTexture();
     };
 
-    class JLinearTextureHolder final : public JTextureHolder {
+    class JLinearTextureContainer final : public JTextureContainer {
     public:
-        using ptr = std::shared_ptr<JLinearTextureHolder>;
-        JLinearTextureHolder(uchar *data, std::uint16_t width, std::uint16_t height, int channel);
-        virtual ~JLinearTextureHolder() = default;
+        using ptr = std::shared_ptr<JLinearTextureContainer>;
+        JLinearTextureContainer(uchar *data, std::uint16_t width, std::uint16_t height, int channel);
+        virtual ~JLinearTextureContainer() = default;
     private:
         virtual uint xyToIndex(const std::uint16_t &x, const std::uint16_t &y) const override;
     };
 
-    class JTilingTextureHolder final : public JTextureHolder {
+    class JTilingTextureContainer final : public JTextureContainer {
     public:
-        using ptr = std::shared_ptr<JTilingTextureHolder>;
-        JTilingTextureHolder(uchar *data, std::uint16_t width, std::uint16_t height, int channel);
-        virtual ~JTilingTextureHolder() = default;
+        using ptr = std::shared_ptr<JTilingTextureContainer>;
+        JTilingTextureContainer(uchar *data, std::uint16_t width, std::uint16_t height, int channel);
+        virtual ~JTilingTextureContainer() = default;
     private:
         static constexpr int tileBase4 = 4;
         static constexpr int tileBase16 = 16;
@@ -52,11 +52,11 @@ namespace JackalRenderer{
         virtual uint xyToIndex(const std::uint16_t &x, const std::uint16_t &y) const override;
     };
 
-    class JSwizzlingTextureHolder final : public JTextureHolder {
+    class JSwizzlingTextureContainer final : public JTextureContainer {
     public:
-        using ptr = std::shared_ptr<JSwizzlingTextureHolder>;
-        JSwizzlingTextureHolder(uchar *data, std::uint16_t width, std::uint16_t height, int channel);
-        virtual ~JSwizzlingTextureHolder() = default;
+        using ptr = std::shared_ptr<JSwizzlingTextureContainer>;
+        JSwizzlingTextureContainer(uchar *data, std::uint16_t width, std::uint16_t height, int channel);
+        virtual ~JSwizzlingTextureContainer() = default;
     private:
         static constexpr int tileBase32 = 32;
         static constexpr int tileBase1024 = 1024;
@@ -91,4 +91,4 @@ namespace JackalRenderer{
     };
 }
 
-#endif //JTEXTUREHOLDER_H
+#endif //JTEXTUREContainer_H

@@ -9,11 +9,12 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <functional>
 
 #include "glm/glm.hpp"
 
 #include "JShadingState.h"
-#include "JTextureHolder.h"
+#include "JTextureContainer.h"
 
 namespace JackalRenderer {
     class JTexture2D final {
@@ -31,12 +32,14 @@ namespace JackalRenderer {
             JTextureWarpMode warpmode = JTextureWarpMode::J_REPEAT,
             JTextureFilterMode filtermode = JTextureFilterMode::J_LINEAR);
 
+        glm::vec4 sample(const glm::vec2 &uv, const float &level = 0.0f) const;
+
     private:
         void readPixel(const std::uint16_t &u, const std::uint16_t &v,
             uchar &r, uchar &g, uchar &b, uchar &a, const int level = 0) const;
         void generateMipmap(uchar *pixels, int width, int height, int channel);
         bool enableMipmap = false;
-        std::vector<JTextureHolder::ptr> texHolders;
+        std::vector<JTextureContainer::ptr> textureContainers;
         JTextureWarpMode warpMode;
         JTextureFilterMode filterMode;
 
@@ -44,8 +47,9 @@ namespace JackalRenderer {
     };
 
     class JTexture2DSampler final {
-        static glm::vec4 textureSamplingNearest(JTextureHolder::ptr texture, glm::vec2 uv);
-        static glm::vec4 textureSamplingBilinear(JTextureHolder::ptr texture, glm::vec2 uv);
+    public:
+        static glm::vec4 textureSamplingNearest(JTextureContainer::ptr texture, glm::vec2 uv);
+        static glm::vec4 textureSamplingBilinear(JTextureContainer::ptr texture, glm::vec2 uv);
     };
 }
 
