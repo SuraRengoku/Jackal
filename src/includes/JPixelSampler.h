@@ -40,6 +40,7 @@ namespace JackalRenderer {
 
     template<typename T>
     class J4PixelSampler : public JTPixelSampler<T, 4> {
+    public: //make sure this constructor is accessible
         J4PixelSampler(const T &value) { this->samplers.fill(value); }
         static const std::array<glm::vec2, 4> &getSamplingOffset() {
             return {
@@ -61,6 +62,7 @@ namespace JackalRenderer {
 
     template<typename T>
     class J8PixelSampler : public JTPixelSampler<T, 8> {
+    public:
         J8PixelSampler(const T &value) { this->samplers.fill(value); }
         static const std::array<glm::vec2, 8> &getSamplingOffset() {
             return{

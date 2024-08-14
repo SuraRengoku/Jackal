@@ -27,7 +27,9 @@ add_library(${PROJECT_NAME} ${SRCS} ${HEADERS}
         src/includes/JShadingState.h
         src/includes/JTexture2D.h
         src/JTexture2D.cpp
-        src/JTextureContainer.cpp)
+        src/JTextureContainer.cpp
+        src/includes/JShadingPipeline.h
+        src/JShadingPipeline.cpp)
 add_library(Jackal::renderer ALIAS ${PROJECT_NAME})
 
 target_link_libraries( ${PROJECT_NAME}
