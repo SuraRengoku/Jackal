@@ -52,15 +52,38 @@ namespace JackalRenderer {
             FragmentData() = delete;
             FragmentData(const glm::ivec2 &screenPos) : spos(screenPos) {}
 
-            static void aftPrespCorrection(FragmentData &v);
+            static void aftPerspCorrection(FragmentData &v);
         };
 
         class QuadFragments {
         public:
             FragmentData fragments[4];
-            inline float dUdx() const {return };
+            inline float dUdx() const { return fragments[1].tex.x - fragments[0].tex.x; }
+            inline float dUdy() const { return fragments[2].tex.x - fragments[0].tex.x; }
+            inline float dVdx() const { return fragments[1].tex.y - fragments[0].tex.y; }
+            inline float dVdy() const { return fragments[2].tex.y - fragments[0].tex.y; }
 
+            inline void aftPerspCorrectionforBlocks() {
+                JShadingPipeline::FragmentData::aftPerspCorrection(fragments[0]);
+                JShadingPipeline::FragmentData::aftPerspCorrection(fragments[1]);
+                JShadingPipeline::FragmentData::aftPerspCorrection(fragments[2]);
+                JShadingPipeline::FragmentData::aftPerspCorrection(fragments[3]);
+            }
         };
+
+        virtual ~JShadingPipeline() = default;
+
+        void setModelMatrix(const glm::mat4& model) {
+            //TODO
+        }
+
+        void setViewProjectMatrix(const glm::mat4& vp) {  }
+        void setLightingEnable(bool enable) {  }
+
+        void setAmbientCoef(const glm::vec3& ka) {}
+        void setDiffuseCoef(const glm::vec3& kd) {}
+        void setSpecularCoef(const glm::vec3& ks) {}
+        void setEmissionColor(const glm::vec3& ke) {}
     };
 }
 
