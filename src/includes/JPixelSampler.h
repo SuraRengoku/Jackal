@@ -42,7 +42,7 @@ namespace JackalRenderer {
     class J4PixelSampler : public JTPixelSampler<T, 4> {
     public: //make sure this constructor is accessible
         J4PixelSampler(const T &value) { this->samplers.fill(value); }
-        static const std::array<glm::vec2, 4> &getSamplingOffset() {
+        static const std::array<glm::vec2, 4> &getSamplingOffsets() {
             return {
                 //RGSS
                 //Refs: https://mynameismjp.wordpress.com/2012/10/24/msaa-overview/
@@ -64,7 +64,7 @@ namespace JackalRenderer {
     class J8PixelSampler : public JTPixelSampler<T, 8> {
     public:
         J8PixelSampler(const T &value) { this->samplers.fill(value); }
-        static const std::array<glm::vec2, 8> &getSamplingOffset() {
+        static const std::array<glm::vec2, 8> &getSamplingOffsets() {
             return{
                 //rooks
                 glm::vec2(+0.0625f, -0.4375f),glm::vec2(+0.3125f, -0.0625f),
@@ -83,6 +83,9 @@ namespace JackalRenderer {
 #elif MSAA8X
     template<typename T>
     using JPixelSampler = J8PixelSampler<T>;
+#elif MSAA2X
+    template<typename T>
+    using JPixelSampler = J2PixelSampler<T>;
 #else
     template<typename T>
     using JPixelSampler = J1PixelSampler<T>;

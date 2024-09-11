@@ -24,6 +24,10 @@ namespace JackalRenderer {
         JTexture2D(bool enablemipmap);
         ~JTexture2D() = default;
 
+        bool isGeneratedMipmap() const { return enableMipmap; }
+        int getWidth() const { return textureContainers[0] -> getWidth(); }
+        int getHeight() const { return textureContainers[0] -> getHeight(); }
+
         void setWarpMode(JTextureWarpMode mode) { warpMode = mode; }
         void setFilterMode(JTextureFilterMode mode) { filterMode = mode; }
 
