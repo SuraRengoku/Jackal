@@ -15,7 +15,8 @@ namespace JackalRenderer {
     enum JDepthWriteMode { J_DEPTH_WRITE_DISABLE, J_DEPTH_WRITE_ENABLE };
     enum JLightingMode { J_LIGHTING_DISABLE, J_LIGHTING_ENABLE };
     enum JAlphaBlendingMode { J_ALPHA_DISABLE, J_ALPHA_BLENDING, J_ALPHA_TO_COVERAGE };
-    class JShadeingState {
+    class JShadingState {
+    public:
         JCullFaceMode cullFaceMode = JCullFaceMode::J_CULL_BACK;
         JDepthTestMode depthTestMode = JDepthTestMode::J_DEPTH_TEST_ENABLE;
         JDepthWriteMode depthWriteMode = JDepthWriteMode::J_DEPTH_WRITE_ENABLE;

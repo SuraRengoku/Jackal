@@ -31,7 +31,11 @@ add_library(${PROJECT_NAME} ${SRCS} ${HEADERS}
         src/includes/JShadingPipeline.h
         src/JShadingPipeline.cpp
         src/includes/JDrawableMesh.h
-        src/JDrawableMesh.cpp)
+        src/JDrawableMesh.cpp
+        src/includes/JRenderer.h
+        src/JRenderer.cpp
+        src/includes/JShaderProgram.h
+        src/JShaderProgram.cpp)
 add_library(Jackal::renderer ALIAS ${PROJECT_NAME})
 
 target_link_libraries( ${PROJECT_NAME}

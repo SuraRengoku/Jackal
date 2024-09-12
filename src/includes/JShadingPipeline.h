@@ -29,7 +29,7 @@ namespace JackalRenderer {
             glm::ivec2 spos;
             glm::mat3 tbn;
             bool needInterpolatedTBN = false;
-            float rhw;
+            float rhw; //Reciprocal Homogeneous W, 即w分量的倒数 1/w
             VertexData() = default;
             VertexData(const glm::ivec2 &screenPos) : spos(screenPos) {}
             //linear interpolation

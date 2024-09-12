@@ -72,7 +72,7 @@ namespace JackalRenderer {
 
     class JDrawableMesh {
     public:
-        using prt = std::shared_ptr<JDrawableMesh>;
+        using ptr = std::shared_ptr<JDrawableMesh>;
 
         JDrawableMesh(const string& path, bool generatedMipmap);
 

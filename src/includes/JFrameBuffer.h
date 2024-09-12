@@ -16,7 +16,7 @@ namespace JackalRenderer {
 
     class JFrameBuffer final {
     public:
-        using prt = std::shared_ptr<JFrameBuffer>;
+        using ptr = std::shared_ptr<JFrameBuffer>;
 
         JFrameBuffer(int width, int height);
         ~JFrameBuffer() = default;
