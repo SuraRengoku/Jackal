@@ -369,6 +369,41 @@ namespace JackalRenderer {
             return (p.x <= p.w && p.x >= -p.w) && (p.y <= p.w && p.y >= -p.w)
                 && (p.z <= p.w && p.z >= -p.w) && (p.w <= far && p.w >= near);
         };
+        if(isPointInsideInClipingFrustum(v0.cpos, near, far) &&
+            isPointInsideInClipingFrustum(v1.cpos, near, far) &&
+            isPointInsideInClipingFrustum(v2.cpos, near, far)) {
+            return {v0, v1, v2};
+        }
+
+        //faster than below
+        if (v0.cpos.w < near && v1.cpos.w < near && v2.cpos.w < near)
+            return{};
+        if (v0.cpos.w > far && v1.cpos.w > far && v2.cpos.w > far)
+            return{};
+        if (v0.cpos.x > v0.cpos.w && v1.cpos.x > v1.cpos.w && v2.cpos.x > v2.cpos.w)
+            return{};
+        if (v0.cpos.x < -v0.cpos.w && v1.cpos.x < -v1.cpos.w && v2.cpos.x < -v2.cpos.w)
+            return{};
+        if (v0.cpos.y > v0.cpos.w && v1.cpos.y > v1.cpos.w && v2.cpos.y > v2.cpos.w)
+            return{};
+        if (v0.cpos.y < -v0.cpos.w && v1.cpos.y < -v1.cpos.w && v2.cpos.y < -v2.cpos.w)
+            return{};
+        if (v0.cpos.z > v0.cpos.w && v1.cpos.z > v1.cpos.w && v2.cpos.z > v2.cpos.w)
+            return{};
+        if (v0.cpos.z < -v0.cpos.w && v1.cpos.z < -v1.cpos.w && v2.cpos.z < -v2.cpos.w)
+            return{};
+
+        //as alternative
+        if(!isPointInsideInClipingFrustum(v0.cpos, near, far) &&
+            !isPointInsideInClipingFrustum(v1.cpos, near, far) &&
+            !isPointInsideInClipingFrustum(v2.cpos, near, far)) {
+            return {};
+        }
+
+        vector<JShadingPipeline::VertexData> insideVertices;
+        vector<JShadingPipeline::VertexData> tmp = {v0, v1, v2};
+        enum Axis { X = 0, Y = 1, Z = 2};
+
 
     }
 
