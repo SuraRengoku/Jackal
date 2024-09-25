@@ -48,7 +48,7 @@ namespace JackalRenderer {
         JLight::ptr getLightSource(const int& idx);
         void setExposure(const float& exposure);
 
-        uint renderAllDrawableMeshed();
+        uint renderAllDrawableMeshes();
 
         uint renderAllDrawableMesh(const size_t& idx);
 
@@ -74,7 +74,7 @@ namespace JackalRenderer {
         glm::mat4 project_Matrix = glm::mat4(1.0f); //camera space -> clip space
         glm::mat4 viewport_Matrix = glm::mat4(1.0f); //ndc space -> screen space
 
-        JShadingState shadeing_state_;
+        JShadingState shading_state_;
 
         glm::vec2 frustumNearFar;
 
@@ -82,7 +82,7 @@ namespace JackalRenderer {
 
         JFrameBuffer::ptr backBuffer;
         JFrameBuffer::ptr frontBuffer;
-        vector<uchar> renderedImg;
+        vector<uchar> renderedImg; // 1 byte
     };
 }
 

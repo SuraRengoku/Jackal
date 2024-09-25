@@ -188,6 +188,7 @@ namespace JackalRenderer {
                 int num_failed = 0;
                 if(shadingState.depthTestMode == JDepthTestMode::J_DEPTH_TEST_ENABLE) {
                     const auto& coverageDepth = fragment.coverageDepth;
+#pragma unroll
                     for(int s = 0; s < samplingNum; ++s) {
                         if(coverage[s] == 1 && framebuffer -> readDepth(fragCoord.x, fragCoord.y, s) >= coverageDepth[s]) {
                             coverage[s] = 0;
@@ -240,4 +241,141 @@ namespace JackalRenderer {
             fragment_cache_[idx].clear();
         }
     };
+
+    JRenderer::JRenderer(int width, int height) : backBuffer(nullptr), frontBuffer(nullptr){
+        backBuffer = std::make_shared<JFrameBuffer>(width, height);
+        frontBuffer = std::make_shared<JFrameBuffer>(width, height);
+        renderedImg.resize(width * height * 3, 0);
+        //ndc space -> screen space
+        viewport_Matrix = JMathUtils::calcViewPortMatrix(width, height);
+    }
+
+    void JRenderer::addDrawableMesh(JDrawableMesh::ptr mesh) {
+        drawable_meshes_.push_back(mesh);
+    }
+    //for batch
+    void JRenderer::addDrawableMesh(const vector<JDrawableMesh::ptr> &meshes) {
+        drawable_meshes_.insert(drawable_meshes_.end(), meshes.begin(), meshes.end());
+    }
+
+    void JRenderer::unloadDrawableMesh() {
+        for(size_t i = 0; i < drawable_meshes_.size(); ++i)
+            drawable_meshes_[i] -> clear();
+        vector<JDrawableMesh::ptr>().swap(drawable_meshes_);
+    }
+
+    void JRenderer::setViewerPos(const glm::vec3 &viewer) {
+        if(shaderHandler == nullptr)
+            return;
+        shaderHandler -> setViewerPos(viewer);
+    }
+    /*
+     * @return the index of current lightSource
+     */
+    int JRenderer::addLightSource(JLight::ptr lightSource) {
+        return JShadingPipeline::addLight(lightSource);
+    }
+
+    JLight::ptr JRenderer::getLightSource(const int &idx) {
+        return JShadingPipeline::getLight(idx);
+    }
+
+    void JRenderer::setExposure(const float &exposure) {
+        JShadingPipeline::setExposure(exposure);
+    }
+
+    uint JRenderer::renderAllDrawableMeshes() {
+        if(shaderHandler == nullptr) {
+            shaderHandler = std::make_shared<J3DShadingPipeline>();
+        }
+        shaderHandler -> setModelMatrix(model_Matrix);
+        shaderHandler -> setViewProjectMatrix(project_Matrix * view_Matrix);
+
+        uint numTriangles = 0;
+        for(size_t m = 0; m < drawable_meshes_.size(); ++m) {
+            numTriangles += renderAllDrawableMesh(m);
+        }
+
+        backBuffer -> resolve();
+        {
+            std::swap(backBuffer, frontBuffer);
+        }
+        return numTriangles;
+    }
+
+    uint JRenderer::renderAllDrawableMesh(const size_t &idx) {
+        if(idx >= drawable_meshes_.size())
+            return 0;
+
+        uint numTriangles = 0;
+        const auto& drawable = drawable_meshes_[idx];
+        const auto& submeshes = drawable -> getDrawableSubMeshes();
+
+        shading_state_.cullFaceMode = drawable -> getCullFaceMode();
+        shading_state_.depthTestMode = drawable -> getDepthTestMode();
+        shading_state_.depthWriteMode = drawable -> getDepthWriteMode();
+        shading_state_.alphaBlendingMode = drawable -> getAlphaBlendingMode();
+
+        shaderHandler -> setModelMatrix(drawable -> getModelMatrix());
+        shaderHandler -> setLightingEnable(drawable -> getLightingMode() == JLightingMode::J_LIGHTING_ENABLE);
+        shaderHandler -> setAmbientCoef(drawable -> getAmbientCoff());
+        shaderHandler -> setDiffuseCoef(drawable -> getDiffuseCoff());
+        shaderHandler -> setSpecularCoef(drawable -> getSpecularCoff());
+        shaderHandler -> setEmissionColor(drawable -> getEmissionCoff());
+        shaderHandler -> setShininess(drawable -> getSpecularExponent());
+        shaderHandler -> setTransparency(drawable -> getTransparency());
+
+        tbb::filter_mode executeMode = shading_state_.alphaBlendingMode == JAlphaBlendingMode::J_ALPHA_DISABLE ? tbb::filter_mode::parallel : tbb::filter_mode::serial_in_order;
+
+        static int ntokens = tbb::this_task_arena::max_concurrency() * 128;
+        static FragmentCache fragment_cache;
+        static FramebufferMutex frab_framebuffer_mutex(backBuffer -> getWidth(), backBuffer -> getHeight());
+        for(size_t s = 0; s < submeshes.size(); ++s) {
+            const auto& submesh = submeshes[s];
+            int faceNum = submesh.getIndices().size() / 3;
+            numTriangles + faceNum;
+
+            shaderHandler -> setDiffuseTexId(submesh.getDiffuseMapTexId());
+            shaderHandler -> setSpecularTexId(submesh.getSpecularMapTexId());
+            shaderHandler -> setNormalTexId(submesh.getNormalMapTexId());
+            shaderHandler -> setGlowTexId(submesh.getGlowMapTexId()); //Emission
+
+            DrawcallSetting drawCall(submesh.getVertices(), submesh.getIndices(), shaderHandler.get(),
+                shading_state_, viewport_Matrix, frustumNearFar.x, frustumNearFar.y, backBuffer.get());
+
+            for(int f = 0; f < faceNum; f += PIPELINE_BATCH_SIZE) {
+                int startIdx = f;
+                int endIdx = glm::min(f + PIPELINE_BATCH_SIZE, faceNum);
+                tbb::parallel_pipeline(ntokens, tbb::make_filter<void, int>(executeMode, TBBVertexRastFilter(PIPELINE_BATCH_SIZE, startIdx, endIdx, drawCall, fragment_cache)) &
+                    tbb::make_filter<int, void>(executeMode, TBBFragmentFilter(PIPELINE_BATCH_SIZE, drawCall, fragment_cache, frab_framebuffer_mutex)));
+            }
+        }
+        return numTriangles;
+    }
+
+    uchar *JRenderer::commitRenderedColorBuffer() {
+        const auto& pixelBuffer = frontBuffer -> getColorBuffer();
+        parallelLoop((size_t)0, (size_t)(frontBuffer -> getWidth() * frontBuffer -> getHeight()), [&](const size_t& index) {
+            const auto& pixel = pixelBuffer[index];
+            renderedImg[index * 3 + 0] = pixel[0][0];
+            renderedImg[index * 3 + 1] = pixel[0][1];
+            renderedImg[index * 3 + 2] = pixel[0][2];
+        });
+        return renderedImg.data();
+    }
+
+    vector<JShadingPipeline::VertexData> JRenderer::clipingSutherlandHodgeman(const JShadingPipeline::VertexData &v0, const JShadingPipeline::VertexData &v1, const JShadingPipeline::VertexData &v2, const float &near, const float &far) {
+        auto isPointInsideInClipingFrustum = [](const glm::vec4& p, const float& near, const float& far) -> bool {
+            return (p.x <= p.w && p.x >= -p.w) && (p.y <= p.w && p.y >= -p.w)
+                && (p.z <= p.w && p.z >= -p.w) && (p.w <= far && p.w >= near);
+        };
+
+    }
+
+    vector<JShadingPipeline::VertexData> JRenderer::clipingSutherlandHodgemanAux(const vector<JShadingPipeline::VertexData> &polygon, const int &axis, const int &side) {
+
+    }
+
+
+
 }
