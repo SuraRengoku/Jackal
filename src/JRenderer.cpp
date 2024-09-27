@@ -365,17 +365,20 @@ namespace JackalRenderer {
     }
 
     vector<JShadingPipeline::VertexData> JRenderer::clipingSutherlandHodgeman(const JShadingPipeline::VertexData &v0, const JShadingPipeline::VertexData &v1, const JShadingPipeline::VertexData &v2, const float &near, const float &far) {
+        //clipping using homogeneous coordinates
+        //ref: https://dl.acm.org/doi/pdf/10.1145/965139.807398
         auto isPointInsideInClipingFrustum = [](const glm::vec4& p, const float& near, const float& far) -> bool {
             return (p.x <= p.w && p.x >= -p.w) && (p.y <= p.w && p.y >= -p.w)
                 && (p.z <= p.w && p.z >= -p.w) && (p.w <= far && p.w >= near);
         };
+
         if(isPointInsideInClipingFrustum(v0.cpos, near, far) &&
             isPointInsideInClipingFrustum(v1.cpos, near, far) &&
             isPointInsideInClipingFrustum(v2.cpos, near, far)) {
             return {v0, v1, v2};
-        }
+        }// all vertices are inside the frustum
 
-        //faster than below
+        //all vertices are outside the frustum, faster than below
         if (v0.cpos.w < near && v1.cpos.w < near && v2.cpos.w < near)
             return{};
         if (v0.cpos.w > far && v1.cpos.w > far && v2.cpos.w > far)
@@ -393,24 +396,81 @@ namespace JackalRenderer {
         if (v0.cpos.z < -v0.cpos.w && v1.cpos.z < -v1.cpos.w && v2.cpos.z < -v2.cpos.w)
             return{};
 
-        //as alternative
-        if(!isPointInsideInClipingFrustum(v0.cpos, near, far) &&
-            !isPointInsideInClipingFrustum(v1.cpos, near, far) &&
-            !isPointInsideInClipingFrustum(v2.cpos, near, far)) {
-            return {};
-        }
+        // {
+        //     //as alternative
+        //     if(!isPointInsideInClipingFrustum(v0.cpos, near, far) &&
+        //         !isPointInsideInClipingFrustum(v1.cpos, near, far) &&
+        //         !isPointInsideInClipingFrustum(v2.cpos, near, far)) {
+        //         return {};
+        //     }
+        // }
+
 
         vector<JShadingPipeline::VertexData> insideVertices;
-        vector<JShadingPipeline::VertexData> tmp = {v0, v1, v2};
+        vector<JShadingPipeline::VertexData> tmp = {v0, v1, v2}; //原始顶点, 迭代初始值
         enum Axis { X = 0, Y = 1, Z = 2};
 
+        //3d clipping
+        {
+            insideVertices = clipingSutherlandHodgemanAux(tmp, Axis::X, +1);
+            tmp = insideVertices;
+            insideVertices = clipingSutherlandHodgemanAux(tmp, Axis::X, -1);
+            tmp = insideVertices;
+        }
+        {
+            insideVertices = clipingSutherlandHodgemanAux(tmp, Axis::Y, +1);
+            tmp = insideVertices;
+            insideVertices = clipingSutherlandHodgemanAux(tmp, Axis::Y, -1);
+            tmp = insideVertices;
+        }
+        {
+            insideVertices = clipingSutherlandHodgemanAux(tmp, Axis::Z, +1);
+            tmp = insideVertices;
+            insideVertices = clipingSutherlandHodgemanAux(tmp, Axis::Z, -1);
+            tmp = insideVertices;
+        }
 
+        {
+            insideVertices = {};
+            int numVerts = tmp.size();
+            constexpr float wClippingPlane = 1e-5;
+            for(int i = 0; i < numVerts; ++i) {
+                const auto& begVert = tmp[(i - 1 + numVerts) % numVerts];
+                const auto& endVert = tmp[i];
+                float begIsInside = (begVert.cpos.w < wClippingPlane) ? -1 : 1;
+                float endIsInside = (endVert.cpos.w < wClippingPlane) ? -1 : 1;
+                if(begIsInside * endIsInside < 0) {
+                    float t = (wClippingPlane - begVert.cpos.w) / (begVert.cpos.w - endVert.cpos.w);
+                    auto intersectedVert = JShadingPipeline::VertexData::lerp(begVert, endVert, t);
+                    insideVertices.push_back(intersectedVert);
+                }
+                if(endIsInside > 0) {
+                    insideVertices.push_back(endVert);
+                }
+            }
+        }
+        return insideVertices;
     }
 
     vector<JShadingPipeline::VertexData> JRenderer::clipingSutherlandHodgemanAux(const vector<JShadingPipeline::VertexData> &polygon, const int &axis, const int &side) {
-
+        vector<JShadingPipeline::VertexData> insidePolygon; //空
+        int numVerts = polygon.size();
+        for(int i = 0; i < numVerts; ++i) {
+            const auto& begVert = polygon[(i - 1 + numVerts) % numVerts];
+            const auto& endVert = polygon[i];
+            char begIsInside = ((side * (begVert.cpos[axis]) <= begVert.cpos.w) ? 1 : -1);
+            char endIsInside = ((side * (endVert.cpos[axis]) <= endVert.cpos.w) ? 1 : -1);
+            if(begIsInside * endIsInside < 0) { //有交点
+                //TODO fomular
+                //float t = (begVert.cpos.w + side * begVert.cpos[axis]) / ((begVert.cpos.w + side * begVert.cpos[axis]) - (endVert.cpos.w + side * endVert.cpos[axis]));
+                float t = (begVert.cpos.w - side * begVert.cpos[axis]) / ((begVert.cpos.w - side * begVert.cpos[axis]) - (endVert.cpos.w - side * endVert.cpos[axis]));
+                auto intersectedVert = JShadingPipeline::VertexData::lerp(begVert, endVert, t);
+                insidePolygon.push_back(intersectedVert);
+            }
+            if(endIsInside > 0) {
+                insidePolygon.push_back(endVert);
+            }
+            return insidePolygon;
+        }
     }
-
-
-
 }
