@@ -35,7 +35,11 @@ add_library(${PROJECT_NAME} ${SRCS} ${HEADERS}
         src/includes/JRenderer.h
         src/JRenderer.cpp
         src/includes/JShaderProgram.h
-        src/JShaderProgram.cpp)
+        src/JShaderProgram.cpp
+        src/includes/JSceneParser.h
+        src/JSceneParser.cpp
+        src/includes/JWindowsApp.h
+        src/JWindowsApp.cpp)
 add_library(Jackal::renderer ALIAS ${PROJECT_NAME})
 
 target_link_libraries( ${PROJECT_NAME}

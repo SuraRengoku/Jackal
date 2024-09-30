@@ -85,7 +85,7 @@ namespace JackalRenderer {
 
         void setAmbientCoff(const glm::vec3& cof) { drawable_material_config.kA = cof; }
         void setDiffuseCoff(const glm::vec3& cof) { drawable_material_config.kD = cof; }
-        void setSpeculerCoff(const glm::vec3& cof) { drawable_material_config.kS = cof; }
+        void setSpecularCoff(const glm::vec3& cof) { drawable_material_config.kS = cof; }
         void setEmissionCoff(const glm::vec3& cof) { drawable_material_config.kE = cof; }
         void setSpecularExponent(const float& cof) { drawable_material_config.shininess = cof; }
         void setTransparency(const float& alpha) { drawable_material_config.transparency = alpha; }
