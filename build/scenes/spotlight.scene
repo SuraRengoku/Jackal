@@ -1,0 +1,105 @@
+Config: 
+	Exposure: 3.0f
+
+Camera:
+	Eye 1.7 0.5 3.6
+	Focus 0.0 0.0 0.0
+	Up 0.0 1.0 0.0
+
+Frustum:
+	Fovy 45.0
+	Near 0.001
+	Nar 1000.0
+	
+SpotLight:
+	Name spotLight1
+	Lightpos 0.4 1.5 0.0
+	Attenuation 1.0 0.7 1.8
+	Lightcolor 1.5 1.5 1.5
+	InnerCutoff 32.5
+	OuterCutoff 47.5
+	SpotDir 0.0 -1.0 0.0
+	
+SpotLight:
+	Name spotLight2
+	Lightpos 1.5 -0.95 0.0
+	Attenuation 1.0 0.7 1.8
+	Lightcolor 3.0 2.443 0.0
+	InnerCutoff 32.5
+	OuterCutoff 47.5
+	SpotDir -1.0 0.0 0.0
+
+Entity:
+	Name Reedemer
+	Path ../../models/reedemer/reedemer.obj
+    Translate -22.0 -1.0 +0.2
+	Rotation 0.0 0.0 0.0
+	Scale 0.005 0.005 0.005
+	Lighting: true
+	Cullface: back
+	Depthtest: true
+	Depthwrite: true
+	Alphablend: disable
+	Material:
+		Transparency 1.0
+		Ns 0.000000
+		Ka 0.800000 0.800000 0.800000
+		Kd 1.200000 1.200000 1.200000
+		Ks 0.000000 0.000000 0.000000
+		Ke 0.000000 0.000000 0.000000
+		
+Entity:
+	Name Floor
+	Path ../../models/floor/floor.obj
+    Translate 0.0 0.0 0.0
+	Rotation 0.0 0.0 0.0
+	Scale 1.8 1.0 1.8
+	Lighting: true
+	Cullface: back
+	Depthtest: true
+	Depthwrite: true
+	Alphablend: alphablend
+	Material:
+		Transparency 1.0
+		Ns 0.0000
+		Ka 0.700 0.700 0.700
+		Kd 1.5000 1.5000 1.5000
+		Ks 0.0000 0.0000 0.0000
+		Ke 0.0000 0.0000 0.0000
+Entity:
+	Name SpotLight1
+	Path ../../models/cube/cube.obj
+	Translate 0.0 1.5 0.0
+	Rotation 0.0 0.0 0.0
+	Scale 1.0 1.0 1.0
+	Lighting: false
+	Cullface: back
+	Depthtest: true
+	Depthwrite: true
+	Alphablend: disable
+	Material:
+		Transparency 1.0
+		Ns 0.0000
+		Ka 0 0 0
+		Kd 0 0 0
+		Ks 0 0 0
+		Ke 1.0 1.0 1.0	
+
+Entity:
+	Name SpotLight2
+	Path ../../models/cube/cube.obj
+	Translate 1.5 -0.95 0.0
+	Rotation 0.0 0.0 0.0
+	Scale 1.0 1.0 1.0
+	Lighting: false
+	Cullface: back
+	Depthtest: true
+	Depthwrite: true
+	Alphablend: disable
+	Material:
+		Transparency 1.0
+		Ns 0.0000
+		Ka 0 0 0
+		Kd 0 0 0
+		Ks 0 0 0
+		Ke 1.0 0.843 0.0	
