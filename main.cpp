@@ -28,7 +28,7 @@ int main(int argc, char* args[]) {
     JRenderer::ptr renderer = std::make_shared<JRenderer>(width, height);
 
     JSceneParser parser;
-    parser.parse("src/components/directionallight.scene", renderer, generateMipmap);
+    parser.parse("resource/components/directionallight.scene", renderer, generateMipmap);
 
     renderer -> setViewMatrix(JMathUtils::calcViewMatrix(parser.scene.cameraPos, parser.scene.cameraFocus, parser.scene.cameraUp));
     renderer -> setProjectMatrix(JMathUtils::calsPersProjectMatrix(parser.scene.frustumFovy, static_cast<float>(width) / height, parser.scene.frustumNear, parser.scene.frustumFar), parser.scene.frustumNear, parser.scene.frustumFar);

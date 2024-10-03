@@ -252,8 +252,8 @@ namespace JackalRenderer {
 
     glm::vec4 JTexture2DSampler::textureSamplingBilinear(JTextureContainer::ptr texture, glm::vec2 uv) {
         uchar r, g, b, a = 255;
-        constexpr auto &&w = std::move(texture->getWidth());
-        constexpr auto &&h = std::move(texture->getHeight());
+        const auto &w = texture->getWidth();
+        const auto &h = texture->getHeight();
         float fx = (uv.x * (w - 1)) + 0.5f, fy = (uv.y * (h - 1)) + 0.5f;
         std::uint16_t ix = static_cast<std::uint16_t>(fx), iy = static_cast<std::uint16_t>(fy);
         float xFrac = fx - ix, yFrac = fy - iy;
