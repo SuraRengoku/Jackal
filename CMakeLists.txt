@@ -5,7 +5,7 @@ project(Jackal)
 set(CMAKE_CXX_STANDARD 11)
 
 include_directories(includes)
-include_directories(Dependency/includes)
+include_directories(${PROJECT_SOURCE_DIR}Dependency/includes)
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     link_directories(${PROJECT_SOURCE_DIR}/Dependency/libs)
@@ -34,9 +34,4 @@ target_link_libraries( ${PROJECT_NAME}
         assimp
 )
 
-set(publish_bin_debug   ${CMAKE_BINARY_DIR}/$<$<CONFIG:Debug>:Debug>>)
-set(publish_bin_release ${CMAKE_BINARY_DIR}/$<$<CONFIG:Release>:Release>)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG    ${publish_bin_debug})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${publish_bin_release})
-
-#add_executable(main.cpp)
+add_subdirectory(display)
