@@ -16,7 +16,7 @@ DirectionalLight:
 	Lightdir 1.0 2.0 -0.5
 	Lightcolor 1.0 1.0 1.0
 
-Entity:
+Object:
 	Name Forest
 	Path ../../models/camping/source/full_forest.fbx
     Translate 0.0 0.0 0.0
@@ -35,7 +35,7 @@ Entity:
 		Ks 0.000000 0.000000 0.000000
 		Ke 0.000000 0.000000 0.000000
 		
-Entity:
+Object:
 	Name Floor
 	Path ../../models/floor/floor.obj
     Translate 0.0 0.99 0.0

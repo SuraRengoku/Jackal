@@ -5,12 +5,14 @@
 #ifndef JDRAWABLEMESH_H
 #define JDRAWABLEMESH_H
 
-
+#include "JShadingState.h"
 #include <vector>
 #include <memory>
 #include <string>
+
+
 #include "glm/glm.hpp"
-#include "JShadingState.h"
+
 
 using std::vector;
 using std::string;

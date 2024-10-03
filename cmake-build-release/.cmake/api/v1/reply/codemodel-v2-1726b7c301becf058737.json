@@ -1,0 +1,354 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8
+					],
+					"jsonFile" : "directory-.-Release-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "examples/example1_point_lighting",
+					"jsonFile" : "directory-examples.example1_point_lighting-Release-a86cf9e9201570cbbf59.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "examples/example1_point_lighting",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "examples/example2_spot_lighting",
+					"jsonFile" : "directory-examples.example2_spot_lighting-Release-fe887bc7cc974c623eaa.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "examples/example2_spot_lighting",
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"build" : "examples/example3_directional_lighting",
+					"jsonFile" : "directory-examples.example3_directional_lighting-Release-ac7ed3d714a1d6dd8efb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 3,
+					"source" : "examples/example3_directional_lighting",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "examples/example4_alpha_blending",
+					"jsonFile" : "directory-examples.example4_alpha_blending-Release-5434d225b71d7efedc10.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 4,
+					"source" : "examples/example4_alpha_blending",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "examples/example5_alpha_to_coverage",
+					"jsonFile" : "directory-examples.example5_alpha_to_coverage-Release-36b6af385292f8d1b3ed.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 5,
+					"source" : "examples/example5_alpha_to_coverage",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "examples/example6_diablo3_pose",
+					"jsonFile" : "directory-examples.example6_diablo3_pose-Release-4b4138bba783c9b02163.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 6,
+					"source" : "examples/example6_diablo3_pose",
+					"targetIndexes" : 
+					[
+						6
+					]
+				},
+				{
+					"build" : "examples/example7_normal_mapping",
+					"jsonFile" : "directory-examples.example7_normal_mapping-Release-4c2b4e0a863b62a3d4ee.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 7,
+					"source" : "examples/example7_normal_mapping",
+					"targetIndexes" : 
+					[
+						7
+					]
+				},
+				{
+					"build" : "examples/example8_complicated_scene",
+					"jsonFile" : "directory-examples.example8_complicated_scene-Release-54c66903a9bd7ef131d8.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 8,
+					"source" : "examples/example8_complicated_scene",
+					"targetIndexes" : 
+					[
+						8
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Jackal",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "example1_point_lighting",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "example2_spot_lighting",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "example3_directional_lighting",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						4
+					],
+					"name" : "example4_alpha_blending",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "example5_alpha_to_coverage",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						6
+					],
+					"name" : "example6_diablo3_pose",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						6
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						7
+					],
+					"name" : "example7_normal_mapping",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						7
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						8
+					],
+					"name" : "example8_complicated_scene",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						8
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Jackal::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Jackal-Release-954d96995c39dc1a7f9d.json",
+					"name" : "Jackal",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "example1_point_lighting::@4375f81ef3e8322dade7",
+					"jsonFile" : "target-example1_point_lighting-Release-b3e321bd882f9c1093c5.json",
+					"name" : "example1_point_lighting",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "example2_spot_lighting::@8660cc731dc9d8f5aa33",
+					"jsonFile" : "target-example2_spot_lighting-Release-c8d4c76c669f34e4ae0a.json",
+					"name" : "example2_spot_lighting",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "example3_directional_lighting::@7ee46e9dc920d51cf2ac",
+					"jsonFile" : "target-example3_directional_lighting-Release-7a45fd27855dca8587e1.json",
+					"name" : "example3_directional_lighting",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "example4_alpha_blending::@6bfe5dd2d6d0f72a69dd",
+					"jsonFile" : "target-example4_alpha_blending-Release-65146ed2c951ff17c349.json",
+					"name" : "example4_alpha_blending",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "example5_alpha_to_coverage::@43c29ac609a7e342fbbb",
+					"jsonFile" : "target-example5_alpha_to_coverage-Release-2bb97a94e72152414fed.json",
+					"name" : "example5_alpha_to_coverage",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "example6_diablo3_pose::@6e5ff4cc984f5eba0e94",
+					"jsonFile" : "target-example6_diablo3_pose-Release-78085d1f7b5b49d7b489.json",
+					"name" : "example6_diablo3_pose",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "example7_normal_mapping::@d01b8cff29f0932a90db",
+					"jsonFile" : "target-example7_normal_mapping-Release-9d32aa225ef7c9ca2127.json",
+					"name" : "example7_normal_mapping",
+					"projectIndex" : 7
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "example8_complicated_scene::@c1bd6b0a24fc8fa7c48c",
+					"jsonFile" : "target-example8_complicated_scene-Release-5bb3baf38672176abf30.json",
+					"name" : "example8_complicated_scene",
+					"projectIndex" : 8
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "E:/Projects/Jackal/cmake-build-release",
+		"source" : "E:/Projects/Jackal"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

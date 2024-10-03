@@ -159,10 +159,10 @@ namespace JackalRenderer {
 
         delete [] tmpAlloc;
         tmpAlloc = nullptr;
-        delete [] previousData;
-        previousData = nullptr;
-        delete [] currentData;
-        currentData = nullptr;
+        //delete [] previousData;
+        //previousData = nullptr;
+        //delete [] currentData;
+        //currentData = nullptr;
         if(reAlloc) {
             delete [] rawData;
             rawData = nullptr;

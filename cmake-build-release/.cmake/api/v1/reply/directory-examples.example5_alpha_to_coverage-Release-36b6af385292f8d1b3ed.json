@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "examples/example5_alpha_to_coverage",
+		"source" : "examples/example5_alpha_to_coverage"
+	}
+}

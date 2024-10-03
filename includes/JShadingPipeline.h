@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
 #include <functional>
 #include "JLight.h"
 #include "JTexture2D.h"

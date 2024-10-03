@@ -4,11 +4,11 @@ project(Jackal)
 
 set(CMAKE_CXX_STANDARD 11)
 
+include_directories(${PROJECT_SOURCE_DIR}/dependency/includes)
 include_directories(includes)
-include_directories(${PROJECT_SOURCE_DIR}Dependency/includes)
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Windows")
-    link_directories(${PROJECT_SOURCE_DIR}/Dependency/libs)
+    link_directories(${PROJECT_SOURCE_DIR}/dependency/libs)
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(SDL2 REQUIRED)
     if (SDL2_FOUND)
@@ -34,4 +34,12 @@ target_link_libraries( ${PROJECT_NAME}
         assimp
 )
 
-add_subdirectory(display)
+#add_subdirectory(display/directional_lighting)
+add_subdirectory(examples/example1_point_lighting)
+add_subdirectory(examples/example2_spot_lighting)
+add_subdirectory(examples/example3_directional_lighting)
+add_subdirectory(examples/example4_alpha_blending)
+add_subdirectory(examples/example5_alpha_to_coverage)
+add_subdirectory(examples/example6_diablo3_pose)
+add_subdirectory(examples/example7_normal_mapping)
+add_subdirectory(examples/example8_complicated_scene)

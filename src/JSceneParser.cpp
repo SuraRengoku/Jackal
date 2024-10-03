@@ -38,6 +38,13 @@ namespace JackalRenderer {
                 float exposure = 1.0f;
                 {
                     std::getline(sceneFile, line);
+                    exposure = parseFloat(line);
+                }
+                renderer->setExposure(exposure);
+            } else if (header == "Camera:") {
+                std::cout << "Camera: ============================================\n";
+                {
+                    std::getline(sceneFile, line);
                     scene.cameraPos = parseVec3(line);
                 }
                 {
